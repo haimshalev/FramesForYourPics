@@ -42,6 +42,11 @@ namespace FramesForYourPics
 
         #region Properties
 
+        public string PicturePath
+        {
+            get { return _picturePath; }
+        }
+
         public BitmapImage Picture
         {
             get { return _picture; }
