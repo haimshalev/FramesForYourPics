@@ -8,12 +8,12 @@
         <Grid.Resources>
             <DataTemplate x:Key="PhotoItemTemplate">
                 <Grid>
-                    
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    
+
                     <TextBox Grid.Column="0" Width="40" Text="{Binding NumberOfTimes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Image Grid.Column="1" Source="{Binding Picture}" Width="160" Height="120" />
                 </Grid>
@@ -29,7 +29,10 @@
 
 
         <Label Grid.Row="0"  Content="המגנטור" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right"/>
-        <Button Grid.Row="1"  Content="בחר תיקיית תמונות" Width="137" Click="Button_Click" HorizontalAlignment="Right"/>
+        <Button x:Name="btnChoosePhotosFolder" Grid.Row="1"  Content="בחר תיקיית תמונות" Width="110" Click="btnChoosePhotosFolder_Click" HorizontalAlignment="Right"/>
+        <Button x:Name="btnRefreshPhostosFolder" Grid.Row="1" Content="רענן" Click="btnRefreshPhostosFolder_Click" Margin="177,0,110,0"/>
+        <Button x:Name="btnChooseFramePath" Grid.Row="1" Content="בחר מסגרת"  Margin="104,0,170,0" Click="btnChooseFramePath_Click"/>
+        <Button x:Name="btnCreatePages" Grid.Row="1" Content="ייצר דפים להדפסה" Margin="0,0,243,0" Click="btnCreatePages_Click"/>
         <ListBox Grid.Row="2"  x:Name="lvPhotos" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=PhotoItemTemplate}"/>
     </Grid>
 </Window>
