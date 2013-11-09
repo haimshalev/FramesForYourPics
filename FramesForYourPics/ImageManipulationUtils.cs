@@ -35,54 +35,20 @@ namespace FramesForYourPics
         }
 
         /// <summary>
-        /// Concatenate the given images horizontally
+        /// Draw the photo on the canvas in the specified location
         /// </summary>
-        /// <param name="firstImage">The left image</param>
-        /// <param name="secondImage">The right image</param>
-        /// <returns>A horizontal concatenated image</returns>
-        public static Image ConcatenateTwoImagesHorizontal(Image firstImage, Image secondImage)
+        /// <param name="canvas">The canvas to draw on</param>
+        /// <param name="photo">The photo to draw</param>
+        /// <param name="xPos">The x start position</param>
+        /// <param name="yPos">The y start position</param>
+        public static void DrawImageOnBitmap(Image canvas, Image photo, int xPos, int yPos)
         {
-            //Create the concatenate image placeholder (1 X 2)
-            var concateImage = new Bitmap(firstImage.Width + secondImage.Width, firstImage.Height);
-
-            //Create a graphics object for the new image
-            using (var g = Graphics.FromImage(concateImage))
+            //Create a graphics object from the canvas
+            using (var g = Graphics.FromImage(canvas))
             {
-                //draw firstImage to upper left corner
-                g.DrawImage(firstImage, 0, 0, firstImage.Width, firstImage.Height);
-
-                //draw the second image along the first image to the right
-                g.DrawImage(secondImage, firstImage.Width, 0, secondImage.Width, secondImage.Height);
+                //draw the image to the canvas
+                g.DrawImage(photo, xPos, yPos, Constants.ScaledWidth, Constants.ScaledHeight);
             }
-
-            //Return the concatenate image
-            return concateImage;
         }
-
-        /// <summary>
-        /// Concatenate the given images vertically
-        /// </summary>
-        /// <param name="firstImage">The upper image</param>
-        /// <param name="secondImage">The lower image</param>
-        /// <returns>A vertical concatenated image</returns>
-        public static Image ConcatenateTwoImagesVertical(Image firstImage, Image secondImage)
-        {
-            //Create the concatenate image placeholder (2 X 1)
-            var concateImage = new Bitmap(firstImage.Width, firstImage.Height + secondImage.Height);
-
-            //Create a graphics object for the new image
-            using (var g = Graphics.FromImage(concateImage))
-            {
-                //draw firstImage to upper left corner
-                g.DrawImage(firstImage, 0, 0, firstImage.Width, firstImage.Height);
-
-                //draw the second image along the first image to the right
-                g.DrawImage(secondImage, 0, firstImage.Height, secondImage.Width, secondImage.Height);
-            }
-
-            //Return the concatenate image
-            return concateImage;
-        }
-
     }
 }
