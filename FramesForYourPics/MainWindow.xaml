@@ -1,8 +1,35 @@
-﻿<Window x:Class="FramesForYourPics.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="FramesForYourPics.MainWindow"
+        Title="MainWindow" Height="Auto" Width="347" Visibility="Visible" WindowStyle="None"  ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid ShowGridLines="False">
+
+        <Grid.Resources>
+            <DataTemplate x:Key="PhotoItemTemplate">
+                <Grid>
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBox Grid.Column="0" Width="40" Text="{Binding NumberOfTimes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Image Grid.Column="1" Source="{Binding Picture}" Width="160" Height="120" />
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+
+        <Label Grid.Row="0"  Content="המגנטור" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right"/>
+        <Button Grid.Row="1"  Content="בחר תיקיית תמונות" Width="137" Click="Button_Click" HorizontalAlignment="Right"/>
+        <ListBox Grid.Row="2"  x:Name="lvPhotos" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=PhotoItemTemplate}"/>
     </Grid>
 </Window>
