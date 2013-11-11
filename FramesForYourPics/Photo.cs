@@ -28,15 +28,15 @@ namespace FramesForYourPics
             // At first each picture need to be printed once 
             NumberOfTimes = 1;
 
-            //Create the sclaled image path
+            //Create the scaled image path
             var scaledImageTempPath = Constants.TempScaledFilesFolder + Path.GetFileName(picturePath);
 
             //Load the image and resize it
             using (var img = Image.FromFile(picturePath))
             {
-                var outputImage = new Bitmap(img, Constants.ScaledWidth/5, Constants.ScaledHeight/5);
+                var outputImage = new Bitmap(img, Constants.ScaledWidth, Constants.ScaledHeight);
 
-               //Save the scaled image to harddrive
+               //Save the scaled image to hard drive
                 outputImage.Save(scaledImageTempPath,ImageFormat.Jpeg);
             }
 
@@ -44,7 +44,7 @@ namespace FramesForYourPics
             _picturePath = scaledImageTempPath;
 
             //Set the picture itself
-            Picture = BitmapFromUri(new Uri(Path.GetFullPath(_picturePath)));
+            Picture = BitmapFromUri(new Uri(Path.GetFullPath(scaledImageTempPath)));
         }
 
         public static BitmapImage BitmapFromUri(Uri source)
