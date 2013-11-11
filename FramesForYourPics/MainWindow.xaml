@@ -36,11 +36,17 @@
 
 
         <Label Grid.Row="0"  Content="המגנטור" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right"/>
-        <DockPanel Grid.Row="1" HorizontalAlignment="Right" FlowDirection="RightToLeft">
-            <Button x:Name="btnChoosePhotosFolder"   Content="בחר תיקיית תמונות" Width="110" Click="btnChoosePhotosFolder_Click" />
-            <Button x:Name="btnRefreshPhostosFolder" Content="רענן" Click="btnRefreshPhostosFolder_Click"/>
-            <Button x:Name="btnChooseFramePath"  Content="בחר מסגרת"   Click="btnChooseFramePath_Click"/>
-            <Button x:Name="btnCreatePages"  Content="ייצר דפים להדפסה"  Click="btnCreatePages_Click" />
+        <DockPanel Grid.Row="1" HorizontalAlignment="Right" FlowDirection="RightToLeft" Width="Auto">
+            <DockPanel Dock="Top">
+                <Button x:Name="btnChoosePhotosFolder" Content="בחר תיקיית תמונות" Click="btnChoosePhotosFolder_Click" Height="50"/>
+                <TextBox x:Name="tbInputFolder" Width="376" IsEnabled="False"></TextBox>
+                <Button x:Name="btnRefreshPhostosFolder" Content="רענן" Click="btnRefreshPhostosFolder_Click" Height="50"/>
+            </DockPanel>
+            <DockPanel Dock="Top" Margin="0">
+                <Button x:Name="btnChooseFramePath"  Content="בחר מסגרת"   Click="btnChooseFramePath_Click" Height="50" Margin="0"/>
+                <TextBox x:Name="tbFramePath" Width="439" IsEnabled="False"></TextBox>
+            </DockPanel>
+            <Button x:Name="btnCreatePages" DockPanel.Dock="Bottom" Content="ייצר דפים להדפסה"  Click="btnCreatePages_Click" Height="50" />
         </DockPanel>
         <ListView Grid.Row="2"  x:Name="lvPhotos" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=PhotoItemTemplate}" FlowDirection="RightToLeft">
             <ListView.ItemsPanel>

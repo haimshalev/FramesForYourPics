@@ -31,6 +31,8 @@ namespace FramesForYourPics
         /// <param name="e"></param>
         private void btnChoosePhotosFolder_Click(object sender, RoutedEventArgs e)
         {
+            DisableAllButtons();
+
             //Open a folder dialog
             var folderDialog = new FolderBrowserDialog();
             var dialogResult = folderDialog.ShowDialog();
@@ -40,7 +42,12 @@ namespace FramesForYourPics
             {
                 //Send the folder path to the logic module
                 _logic.GetPhotosFromFolder(new PhotosRequest(folderDialog.SelectedPath, _photoItems , this));
+
+                //Set the text box content
+                tbInputFolder.Text = folderDialog.SelectedPath;
             }
+
+            EnableAllButtons();
         }
 
         /// <summary>
@@ -50,8 +57,12 @@ namespace FramesForYourPics
         /// <param name="e"></param>
         private void btnRefreshPhostosFolder_Click(object sender, RoutedEventArgs e)
         {
+            DisableAllButtons();
+
             //Send a refresh request for the logic module
             _logic.GetPhotosFromFolder(new PhotosRequest(_photoItems , this));
+
+            EnableAllButtons();
         }
 
         /// <summary>
@@ -61,8 +72,12 @@ namespace FramesForYourPics
         /// <param name="e"></param>
         private void btnCreatePages_Click(object sender, RoutedEventArgs e)
         {
+            DisableAllButtons();
+
             //Send a create pages request to the logic class
             _logic.CreateFramedPages(new CreatePagesRequest(_photoItems ,this));
+
+            EnableAllButtons();
         }
 
         /// <summary>
@@ -86,7 +101,11 @@ namespace FramesForYourPics
            {
                //set the current frame
                _logic.SetFramePath(new SetFrameCommand(openFileDialog.FileName));
+
+               //Set the text box content
+               tbFramePath.Text = openFileDialog.FileName;
            }
+
         }
 
         /// <summary>
@@ -94,7 +113,34 @@ namespace FramesForYourPics
         /// </summary>
         public void NotifyOnAMissingFrame()
         {
-            MessageBox.Show("אנא בחר מסגרת תרם הבקשה להדפסה");
+            MessageBox.Show("אנא בחר מסגרת");
+        }
+
+        public void DisableAllButtons()
+        {
+            btnChooseFramePath.IsEnabled = false;
+            btnChoosePhotosFolder.IsEnabled = false;
+            btnCreatePages.IsEnabled = false;
+            btnRefreshPhostosFolder.IsEnabled = false;
+        }
+
+        public void EnableAllButtons()
+        {
+            btnChooseFramePath.IsEnabled = true;
+            btnChoosePhotosFolder.IsEnabled = true;
+            btnCreatePages.IsEnabled = true;
+            btnRefreshPhostosFolder.IsEnabled = true;
+        }
+
+        public void NotifyOnMissingPhotos(uint u)
+        {
+            var msg = "שים לב ישנם " + u + " מקומות נוספים בדף , לחץ שוב לאישור";
+            btnCreatePages.Content = msg;
+        }
+
+        public void RestoreDefatultContent()
+        {
+            btnCreatePages.Content = "ייצא דפים להפסה";
         }
     }
 }

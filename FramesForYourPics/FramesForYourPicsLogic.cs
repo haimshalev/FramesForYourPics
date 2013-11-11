@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -11,6 +12,9 @@ namespace FramesForYourPics
     {
         private string _inputPhotosPath;
         private string _framePath;
+        private readonly Constants.SupportedFileTypes _supportedFileTypes = new Constants.SupportedFileTypes();
+        private int _lastTimeMissingPhotos;
+
 
         /// <summary>
         /// Set the path to the frame photo
@@ -33,12 +37,12 @@ namespace FramesForYourPics
 
             if (_inputPhotosPath == null) return;
 
-            //Clear the photo list
-            photosRequest.OutputPhotoList.Clear();
+            //Clear all the previous data and arranging temp folders
+            ClearAllTemproryData(photosRequest.OutputPhotoList);
 
             //Get the file list which supported
             var files = from file in Directory.EnumerateFiles(_inputPhotosPath, "*.*", SearchOption.AllDirectories)
-                        where file.EndsWith(Constants.JpgPhotoType) || file.EndsWith(Constants.JpegPhotoType)
+                        where _supportedFileTypes.IsFileSupported(file)
                         select file;
 
             //Iterate over all the files
@@ -65,17 +69,66 @@ namespace FramesForYourPics
                 return;
             }
 
+            //Check if all pages are full
+            var sumOfPhotos = GetNumberOfPhotos(createPagesRequest.OutputPhotoList);
+            if ((sumOfPhotos % 8 != 0) && (_lastTimeMissingPhotos != (sumOfPhotos % 8)))
+            {
+                //Alert the user on the number of missing photos
+                createPagesRequest.CallingWindow.NotifyOnMissingPhotos(8 - (sumOfPhotos % 8));
+
+                _lastTimeMissingPhotos = (int)sumOfPhotos % 8;
+
+                //Return
+                return;
+            }
+
             //Merge all the photos with frames
             MergePhotosWithFrame(createPagesRequest.OutputPhotoList);
 
-            //Create PageList from the temp folder
-            var pageList = new PageList(Constants.TempFolder);
+            //Create PageList from the temp folder and save them to the hard drive
+            // ReSharper disable ObjectCreationAsStatement
+            new PageList(Constants.TempMergedFilesFolder);
+            // ReSharper restore ObjectCreationAsStatement
+            
+            //Clears all the temprory folders and images in cache
+            ClearAllTemproryData(createPagesRequest.OutputPhotoList);
 
-            //Save the page list to the hard drive
-            pageList.Save();
+            createPagesRequest.CallingWindow.RestoreDefatultContent();
+        }
 
-            //Clear the output list allowing the user to delete or replace the images
-            createPagesRequest.OutputPhotoList.Clear();
+        private uint GetNumberOfPhotos(IEnumerable<Photo> photoList)
+        {
+            //Return the sum of all photos
+            return photoList.Aggregate<Photo, uint>(0, (current, photo) => current + photo.NumberOfTimes);
+        }
+
+
+        /// <summary>
+        /// Clears all the temprory folders and images in cache
+        /// </summary>
+        private void ClearAllTemproryData(IList list)
+        {
+            //Clear the photo list
+            list.Clear();
+
+            //If a scaled directory is not empty lets delete it and create a new one
+            DeletaAndCreateDirectory(Constants.TempScaledFilesFolder);
+
+            //If a merged directory is not empty lets delete it and creat a new one
+            DeletaAndCreateDirectory(Constants.TempMergedFilesFolder);
+
+            _lastTimeMissingPhotos = 0;
+        }
+
+        /// <summary>
+        /// Delets recursivly a directory and create a new one instead
+        /// </summary>
+        /// <param name="dirPath">the directory to delete and create</param>
+        private void DeletaAndCreateDirectory(string dirPath)
+        {
+            if (Directory.Exists(dirPath))
+                Directory.Delete(dirPath, true);
+            Directory.CreateDirectory(dirPath);
         }
 
         /// <summary>
@@ -95,10 +148,10 @@ namespace FramesForYourPics
                     for (var i = 0; i < photo.NumberOfTimes; i++)
                     {
                         //Create the merged photo path
-                        var mergedPhotoTempPath = Constants.TempFolder + Path.GetFileNameWithoutExtension(photo.PicturePath) + "_" + i + Path.GetExtension(photo.PicturePath);
+                        var mergedPhotoTempPath = Constants.TempMergedFilesFolder + Path.GetFileNameWithoutExtension(photo.PicturePath) + "_" + i + Constants.OutputFileType;
 
                         //Create the temp directory
-                        Directory.CreateDirectory(Constants.TempFolder);
+                        Directory.CreateDirectory(Constants.TempMergedFilesFolder);
 
                         //Save the merged photo
                         outputImage.Save(mergedPhotoTempPath, ImageFormat.Jpeg);
