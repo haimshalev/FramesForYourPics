@@ -1,4 +1,7 @@
-﻿namespace FramesForYourPics
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace FramesForYourPics
 {
     class Constants
     {
@@ -15,18 +18,34 @@
         #region Supported Types
 
         //The type of photos to save and open
-        public const string JpegPhotoType = ".jpeg";
-        public const string JpgPhotoType = ".jpg";
-        
-        //The photos types which will read from the hard drive
-        public const string PhotoTypes = "*" + JpegPhotoType; 
+        public class SupportedFileTypes
+        {
+            private readonly List<string> _supportedFileTypes; 
+            
+            public SupportedFileTypes()
+            {
+                _supportedFileTypes = new List<string> {".jpeg", ".jpg", ".JPG"};
+            }
+
+            public bool IsFileSupported(string filePath)
+            {
+                //Return true is the file path ends with one of the supported file types
+                return _supportedFileTypes.Any(filePath.EndsWith);
+            }
+        }
+
+        //The type of every file which created during the runtime
+        public const string OutputFileType = ".jpeg";
         
         #endregion
 
         #region Paths Constants
 
+        //The path to the temporary folder which will save the scaled original photos
+        public const string TempScaledFilesFolder = @"TempScaledFolder\";
+
         //A path to a temporary folder which will save the create merged photos
-        public const string TempFolder = @"TempFolder\";
+        public const string TempMergedFilesFolder = @"TempMergedFolder\";
 
         //A path to the output folder which will save the output pages
         public const string OutputFolder = @"OutputFolder\"; 
