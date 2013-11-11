@@ -85,7 +85,7 @@ namespace FramesForYourPics
            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
            {
                //set the current frame
-               _logic.SetFramePath(new SetFrameCommand(openFileDialog.SafeFileName));
+               _logic.SetFramePath(new SetFrameCommand(openFileDialog.FileName));
            }
         }
 
