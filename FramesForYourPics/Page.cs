@@ -21,6 +21,13 @@ namespace FramesForYourPics
         {
             //Create a bitmap which can hold 8 photos (4X2)
             _pageBitmap = new Bitmap(Constants.ScaledWidth * Constants.NumberOfColumnsInAPage , Constants.ScaledHeight * Constants.NumberOfRowsInAPage);
+
+            //Fill it with a white pixels
+            using (var grp = Graphics.FromImage(_pageBitmap))
+            {
+                grp.FillRectangle(
+                    Brushes.White, 0, 0, _pageBitmap.Width, _pageBitmap.Height);
+            }
         }
 
         /// <summary>
