@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -26,11 +28,33 @@ namespace FramesForYourPics
             // At first each picture need to be printed once 
             NumberOfTimes = 1;
 
+            //Create the sclaled image path
+            var scaledImageTempPath = Constants.TempScaledFilesFolder + Path.GetFileName(picturePath);
+
+            //Load the image and resize it
+            using (var img = Image.FromFile(picturePath))
+            {
+                var outputImage = new Bitmap(img, Constants.ScaledWidth/5, Constants.ScaledHeight/5);
+
+               //Save the scaled image to harddrive
+                outputImage.Save(scaledImageTempPath,ImageFormat.Jpeg);
+            }
+
             //Set the picture path
-            _picturePath = picturePath;
+            _picturePath = scaledImageTempPath;
 
             //Set the picture itself
-            Picture = new BitmapImage(new Uri(Path.GetFullPath(_picturePath)));
+            Picture = BitmapFromUri(new Uri(Path.GetFullPath(_picturePath)));
+        }
+
+        public static BitmapImage BitmapFromUri(Uri source)
+        {
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.UriSource = source;
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.EndInit();
+            return bitmap;
         }
 
         #region Members
