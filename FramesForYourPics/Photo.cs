@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using FramesForYourPics.Annotations;
 
@@ -36,7 +37,7 @@ namespace FramesForYourPics
 
         private readonly string _picturePath;
         private BitmapImage _picture;
-        private uint _numberOfTimes; 
+        private uint _numberOfTimes;
 
         #endregion
 
@@ -57,16 +58,51 @@ namespace FramesForYourPics
         {
             get { return _numberOfTimes; }
             set { _numberOfTimes = value; OnPropertyChanged(); }
-        } 
+        }
+
+        public ICommand PlusCommand
+        {
+            get
+            {
+                //Create the command
+                return new RelayCommand(param => PlusNumberOfPhotos());
+            }
+        }
+
+        public ICommand MinusCommand
+        {
+            get
+            {
+                //Create the command
+                return new RelayCommand(param => MinusNumberOfPhotos());
+            }
+        }
 
         #endregion
+
+        /// <summary>
+        /// Add one more copy of this photo to print
+        /// </summary>
+        private void PlusNumberOfPhotos()
+        {
+            NumberOfTimes++;
+        }
+
+        /// <summary>
+        /// Sub one copy of this photo
+        /// </summary>
+        private void MinusNumberOfPhotos()
+        {
+            if (NumberOfTimes != 0)
+                NumberOfTimes--;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
     }

@@ -9,13 +9,21 @@
             <DataTemplate x:Key="PhotoItemTemplate">
                 <Grid>
 
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0" Width="40" Text="{Binding NumberOfTimes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Image Grid.Column="1" Source="{Binding Picture}" Width="160" Height="120" />
+                    <Button Content="+" Command="{Binding PlusCommand}" Grid.Column="0" Grid.Row="0"></Button>
+                    <TextBox Grid.Column="0" Grid.Row="1" Width="40" Text="{Binding NumberOfTimes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Button Content="-" Command="{Binding MinusCommand}" Grid.Column="0" Grid.Row="2"></Button>
+                    <Image Grid.Column="1" Grid.RowSpan="3"  Source="{Binding Picture}" Width="160" Height="120" />
+                    
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
