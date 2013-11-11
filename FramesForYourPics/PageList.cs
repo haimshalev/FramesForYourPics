@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace FramesForYourPics
 {
@@ -9,13 +8,14 @@ namespace FramesForYourPics
     public class PageList
     {
         private readonly string _inputFolder;
-        private readonly List<Page> _pageList = new List<Page>();
+        private readonly int _numOfPagesCreated;
 
         /// <summary>
         /// Constructor - Create a page list from the photos in the input folder 
         /// </summary>
         /// <param name="inputFolder">the source folder path</param>
-        public PageList(string inputFolder)
+        /// <param name="outputFolder">the path to the folder which the pages will be saved in</param>
+        public PageList(string inputFolder , string outputFolder = Constants.OutputFolder)
         {
             //Set the input folder
             _inputFolder = inputFolder;
@@ -24,23 +24,11 @@ namespace FramesForYourPics
             while (Directory.GetFiles(_inputFolder).Length != 0)
             {
                 //Create page from the files in the input folder and delete the handled files
-                _pageList.Add(PageFactory.CreatePage(_inputFolder));
+                var p = PageFactory.CreatePage(_inputFolder);
+
+                //Save the page to the hard drive
+                p.Save(outputFolder + "Page" + (_numOfPagesCreated++) + Constants.OutputFileType);
             }
-        }
-
-        /// <summary>
-        /// Save the inner page list to the hard drive
-        /// </summary>
-        /// <param name="outputFolder">the destination folder</param>
-        public void Save(string outputFolder = Constants.OutputFolder)
-        {
-            //Count the number of pages
-            var pageNum = 0;
-
-            //Save each page to the specified path
-            foreach (var page in _pageList)
-                page.Save(outputFolder + "Page" + (pageNum++) + Constants.JpegPhotoType);
-
         }
     }
 }
