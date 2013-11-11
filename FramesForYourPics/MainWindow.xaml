@@ -2,8 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="FramesForYourPics.MainWindow"
-        Title="MainWindow" Height="Auto" Width="347" Visibility="Visible" WindowStyle="None"  ShowInTaskbar="False" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
-    <Grid ShowGridLines="False">
+        Title="MainWindow" Height="Auto" Width="Auto" Visibility="Visible" WindowStyle="None" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" BorderThickness="2">
+    <Grid ShowGridLines="False" ScrollViewer.HorizontalScrollBarVisibility="Visible">
 
         <Grid.Resources>
             <DataTemplate x:Key="PhotoItemTemplate">
@@ -27,8 +27,7 @@
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
-
-
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
@@ -37,10 +36,21 @@
 
 
         <Label Grid.Row="0"  Content="המגנטור" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right"/>
-        <Button x:Name="btnChoosePhotosFolder" Grid.Row="1"  Content="בחר תיקיית תמונות" Width="110" Click="btnChoosePhotosFolder_Click" HorizontalAlignment="Right"/>
-        <Button x:Name="btnRefreshPhostosFolder" Grid.Row="1" Content="רענן" Click="btnRefreshPhostosFolder_Click" Margin="177,0,110,0"/>
-        <Button x:Name="btnChooseFramePath" Grid.Row="1" Content="בחר מסגרת"  Margin="104,0,170,0" Click="btnChooseFramePath_Click"/>
-        <Button x:Name="btnCreatePages" Grid.Row="1" Content="ייצר דפים להדפסה" Margin="0,0,243,0" Click="btnCreatePages_Click"/>
-        <ListBox Grid.Row="2"  x:Name="lvPhotos" HorizontalAlignment="Right" RenderTransformOrigin="0.5,0.5" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=PhotoItemTemplate}"/>
+        <DockPanel Grid.Row="1" HorizontalAlignment="Right" FlowDirection="RightToLeft">
+            <Button x:Name="btnChoosePhotosFolder"   Content="בחר תיקיית תמונות" Width="110" Click="btnChoosePhotosFolder_Click" />
+            <Button x:Name="btnRefreshPhostosFolder" Content="רענן" Click="btnRefreshPhostosFolder_Click"/>
+            <Button x:Name="btnChooseFramePath"  Content="בחר מסגרת"   Click="btnChooseFramePath_Click"/>
+            <Button x:Name="btnCreatePages"  Content="ייצר דפים להדפסה"  Click="btnCreatePages_Click" />
+        </DockPanel>
+        <ListView Grid.Row="2"  x:Name="lvPhotos" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=PhotoItemTemplate}" FlowDirection="RightToLeft">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+                    ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}"
+                    MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+                    ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}" Grid.IsSharedSizeScope="True" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 </Window>
