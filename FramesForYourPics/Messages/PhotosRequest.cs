@@ -4,13 +4,13 @@
     {
         private readonly string _folderPath;
 
-        public PhotosRequest(PhotoList photoList, MainWindow callingWindow)
-            : this(null, photoList, callingWindow)
+        public PhotosRequest(UiPageList pageList, MainWindow callingWindow)
+            : this(null, pageList, callingWindow)
         {
         }
 
-        public PhotosRequest(string folderPath, PhotoList photoList , MainWindow callingWindow)
-            : base(photoList, callingWindow)
+        public PhotosRequest(string folderPath, UiPageList pageList, MainWindow callingWindow)
+            : base(pageList, callingWindow)
         {
             _folderPath = folderPath;
         }

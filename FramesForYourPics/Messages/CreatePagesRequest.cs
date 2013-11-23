@@ -2,6 +2,6 @@
 {
     public class CreatePagesRequest : FramesForYourPicsMessage
     {
-        public CreatePagesRequest(PhotoList photoList, MainWindow callingWindow) : base(photoList, callingWindow) { }
+        public CreatePagesRequest(UiPageList pageList, MainWindow callingWindow) : base(pageList, callingWindow) { }
     }
 }

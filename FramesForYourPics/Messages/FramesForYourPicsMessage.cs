@@ -1,14 +1,16 @@
-﻿namespace FramesForYourPics.Messages
+﻿using FramesForYourPics.MultiThreadedFramework;
+
+namespace FramesForYourPics.Messages
 {
-    public class FramesForYourPicsMessage
+    public class FramesForYourPicsMessage : Message
     {
-        public PhotoList OutputPhotoList { get; set; }
+        public UiPageList OutputPhotoList { get; set; }
 
         public MainWindow CallingWindow { get; set; }
 
-        public FramesForYourPicsMessage(PhotoList photoList , MainWindow callingWindow)
+        public FramesForYourPicsMessage(UiPageList pageList , MainWindow callingWindow)
         {
-            OutputPhotoList = photoList;
+            OutputPhotoList = pageList;
             CallingWindow = callingWindow;
         }
     }
