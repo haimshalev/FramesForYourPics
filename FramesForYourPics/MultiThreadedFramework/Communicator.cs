@@ -45,8 +45,10 @@ namespace FramesForYourPics.MultiThreadedFramework
         protected void StartRun()
         {
             //Wait for a message to arrive
-            while (_notifyEvent.WaitOne())
+            while (!_messagesQueue.IsEmpty || _notifyEvent.WaitOne())
             {
+                _notifyEvent.Reset();
+
                 Dispatchable message;
                 _messagesQueue.TryDequeue(out message);
 
