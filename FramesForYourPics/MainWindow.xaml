@@ -2,7 +2,12 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="FramesForYourPics.MainWindow"
-        Title="MainWindow" Height="Auto" Width="Auto" Visibility="Visible" WindowStyle="None" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" BorderThickness="2">
+        xmlns:l="clr-namespace:FramesForYourPics"
+        Title="המגנטור" Height="750" Width="530" Visibility="Visible" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" BorderThickness="2" Opacity="0.95">
+
+    <Window.Resources>
+        <l:BoolToStringConverter x:Key="BoolToString" />
+    </Window.Resources>
     <Grid ShowGridLines="False" ScrollViewer.HorizontalScrollBarVisibility="Visible">
 
         <Grid.Resources>
@@ -19,9 +24,9 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Button Content="+" Command="{Binding PlusCommand}" Grid.Column="0" Grid.Row="0"></Button>
+                    <Button Content="+" Command="{Binding PlusCommand}" Grid.Column="0" Grid.Row="0"/>
                     <TextBox Grid.Column="0" Grid.Row="1" Width="40" Text="{Binding NumberOfTimes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Button Content="-" Command="{Binding MinusCommand}" Grid.Column="0" Grid.Row="2"></Button>
+                    <Button Content="-" Command="{Binding MinusCommand}" Grid.Column="0" Grid.Row="2"/>
                     <Image Grid.Column="1" Grid.RowSpan="3"  Source="{Binding Picture}" Width="160" Height="120" />
                     
                 </Grid>
@@ -32,6 +37,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
 
@@ -58,5 +64,9 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+        <DockPanel Grid.Row="3" HorizontalAlignment="Center">
+            <Button x:Name="btn_NextPage" Content="הדף הבא" IsEnabled="{Binding NextEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_NextPage_Click" />
+            <Button x:Name="btn_PreviousPage" Content="הדף הקודם" IsEnabled="{Binding PreviousEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_PreviousPage_Click"/>
+        </DockPanel>
     </Grid>
 </Window>

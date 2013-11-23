@@ -55,7 +55,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BoolToStringConverter.cs" />
+    <Compile Include="MultiThreadedFramework\BadMessageHandlerParameterException.cs" />
+    <Compile Include="MultiThreadedFramework\Dispatcher.cs" />
+    <Compile Include="MultiThreadedFramework\IDispatchable.cs" />
+    <Compile Include="MultiThreadedFramework\MsgTypeAlreadyRegisteredException.cs" />
+    <Compile Include="MultiThreadedFramework\MsgTypeNotRecognizedException.cs" />
+    <Compile Include="MultiThreadedFramework\Communicator.cs" />
+    <Compile Include="PagingData.cs" />
+    <Compile Include="PhotoList.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="UiPageList.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

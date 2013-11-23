@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
 using FramesForYourPics.Messages;
+using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
 namespace FramesForYourPics
@@ -10,15 +11,18 @@ namespace FramesForYourPics
     /// </summary>
     public partial class MainWindow
     {
-        private readonly PhotoList _photoItems = new PhotoList();
+        private readonly UiPageList _uiPageList;
         private readonly FramesForYourPicsLogic _logic;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            _uiPageList = new UiPageList(this);
+
             //Set the data binding 
-            lvPhotos.DataContext = _photoItems;
+            btn_NextPage.DataContext = _uiPageList.Paging;
+            btn_PreviousPage.DataContext = _uiPageList.Paging;
 
             //Create an FramesForYourPicsLogic instance
             _logic = new FramesForYourPicsLogic();
@@ -31,8 +35,6 @@ namespace FramesForYourPics
         /// <param name="e"></param>
         private void btnChoosePhotosFolder_Click(object sender, RoutedEventArgs e)
         {
-            DisableAllButtons();
-
             //Open a folder dialog
             var folderDialog = new FolderBrowserDialog();
             var dialogResult = folderDialog.ShowDialog();
@@ -41,13 +43,15 @@ namespace FramesForYourPics
             if (dialogResult == System.Windows.Forms.DialogResult.OK)
             {
                 //Send the folder path to the logic module
-                _logic.GetPhotosFromFolder(new PhotosRequest(folderDialog.SelectedPath, _photoItems , this));
+                _logic.Notify(new PhotosRequest(folderDialog.SelectedPath, _uiPageList, this));
+
+                //Set the data binding of the page to the new created photo list
+                lvPhotos.DataContext = _uiPageList.GetCurrentPage();
 
                 //Set the text box content
                 tbInputFolder.Text = folderDialog.SelectedPath;
             }
 
-            EnableAllButtons();
         }
 
         /// <summary>
@@ -57,12 +61,10 @@ namespace FramesForYourPics
         /// <param name="e"></param>
         private void btnRefreshPhostosFolder_Click(object sender, RoutedEventArgs e)
         {
-            DisableAllButtons();
 
             //Send a refresh request for the logic module
-            _logic.GetPhotosFromFolder(new PhotosRequest(_photoItems , this));
+            _logic.Notify(new PhotosRequest(_uiPageList, this));
 
-            EnableAllButtons();
         }
 
         /// <summary>
@@ -72,12 +74,11 @@ namespace FramesForYourPics
         /// <param name="e"></param>
         private void btnCreatePages_Click(object sender, RoutedEventArgs e)
         {
-            DisableAllButtons();
+            btnCreatePages.Content = "מייצר דפים להדפסה , אנא המתן עד להעלמות כל התמונות";
 
             //Send a create pages request to the logic class
-            _logic.CreateFramedPages(new CreatePagesRequest(_photoItems ,this));
+            _logic.Notify(new CreatePagesRequest(_uiPageList, this));
 
-            EnableAllButtons();
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace FramesForYourPics
            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
            {
                //set the current frame
-               _logic.SetFramePath(new SetFrameCommand(openFileDialog.FileName));
+               _logic.Notify(new SetFrameCommand(openFileDialog.FileName));
 
                //Set the text box content
                tbFramePath.Text = openFileDialog.FileName;
@@ -113,34 +114,103 @@ namespace FramesForYourPics
         /// </summary>
         public void NotifyOnAMissingFrame()
         {
+            if (!Dispatcher.CheckAccess())
+            {
+                // we were called on a worker thread
+                // marshal the call to the user interface thread
+                Dispatcher.Invoke(new ParameterLessDelegate(NotifyOnAMissingFrame),
+                            new object[] { });
+                return;
+            }
+
+            // this code can only be reached
+            // by the user interface thread
             MessageBox.Show("אנא בחר מסגרת");
         }
 
-        public void DisableAllButtons()
+        /// <summary>
+        /// Notify the user that u pictures are missing 
+        /// </summary>
+        /// <param name="u">the number of photos missing to fill all pages</param>
+        public void NotifyOnMissingPhotos(int u)
         {
-            btnChooseFramePath.IsEnabled = false;
-            btnChoosePhotosFolder.IsEnabled = false;
-            btnCreatePages.IsEnabled = false;
-            btnRefreshPhostosFolder.IsEnabled = false;
-        }
+            if (!Dispatcher.CheckAccess())
+            {
+                // we were called on a worker thread
+                // marshal the call to the user interface thread
+                Dispatcher.Invoke(new IntParameterDelegate(NotifyOnMissingPhotos),
+                            new object[] { u });
+                return;
+            }
 
-        public void EnableAllButtons()
-        {
-            btnChooseFramePath.IsEnabled = true;
-            btnChoosePhotosFolder.IsEnabled = true;
-            btnCreatePages.IsEnabled = true;
-            btnRefreshPhostosFolder.IsEnabled = true;
-        }
-
-        public void NotifyOnMissingPhotos(uint u)
-        {
+            // this code can only be reached
+            // by the user interface thread
             var msg = "שים לב ישנם " + u + " מקומות נוספים בדף , לחץ שוב לאישור";
             btnCreatePages.Content = msg;
         }
 
+        /// <summary>
+        /// Bind the photo list to the main list view control
+        /// </summary>
+        /// <param name="photoList">the photo list to bind</param>
+        public void SetListViewDataBinding(PhotoList photoList)
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                // we were called on a worker thread
+                // marshal the call to the user interface thread
+                Dispatcher.Invoke(new PhotoListParameterDelegate(SetListViewDataBinding),
+                            new object[] { photoList });
+                return;
+            }
+
+            // this code can only be reached
+            // by the user interface thread
+            lvPhotos.DataContext = photoList;
+        }
+
+        /// <summary>
+        /// Restore all the buttons content
+        /// </summary>
         public void RestoreDefatultContent()
         {
+            if (!Dispatcher.CheckAccess())
+            {
+                // we were called on a worker thread
+                // marshal the call to the user interface thread
+                Dispatcher.Invoke(new ParameterLessDelegate(RestoreDefatultContent),
+                            new object[] { });
+                return;
+            }
+
+            // this code can only be reached
+            // by the user interface thread
             btnCreatePages.Content = "ייצא דפים להפסה";
+        }
+
+        /// <summary>
+        /// Iterate the page list and change the data context if the list view accordingly
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_NextPage_Click(object sender, RoutedEventArgs e)
+        {
+            SetListViewDataBinding(_uiPageList.SetNextPage());
+        }
+
+        /// <summary>
+        /// Iterate the page list and change the data context if the list view accordingly
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_PreviousPage_Click(object sender, RoutedEventArgs e)
+        {
+            SetListViewDataBinding(_uiPageList.SetPreviousPage());
+        }
+
+        private void btn_Close_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

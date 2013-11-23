@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -11,19 +10,13 @@ using FramesForYourPics.Annotations;
 
 namespace FramesForYourPics
 {
-
-    /// <summary>
-    /// An observable lost of photo objects, used for binding to a list box
-    /// </summary>
-    public class PhotoList : ObservableCollection<Photo>{}
-
     /// <summary>
     /// Holds all the data which saved for every item template in the UI
     /// Uses two way data binding to change the UI and the source
     /// </summary>
     public class Photo : INotifyPropertyChanged
     {
-        public Photo(string picturePath)
+        public Photo(string picturePath , bool setPicture = false)
         {
             // At first each picture need to be printed once 
             NumberOfTimes = 1;
@@ -44,7 +37,18 @@ namespace FramesForYourPics
             _picturePath = scaledImageTempPath;
 
             //Set the picture itself
-            Picture = BitmapFromUri(new Uri(Path.GetFullPath(scaledImageTempPath)));
+            EnablePicture(setPicture);
+        }
+
+        /// <summary>
+        /// Set or remove the refernce to the image
+        /// </summary>
+        /// <param name="enable">flag which indicate if to enable or disable the image</param>
+        public void EnablePicture(bool enable)
+        {
+            //If we need to enable set the bitmap else remove the refernce
+            Picture = enable ? BitmapFromUri(new Uri(Path.GetFullPath(_picturePath))) : null;
+            if (Picture != null) Picture.Freeze();
         }
 
         public static BitmapImage BitmapFromUri(Uri source)
@@ -61,7 +65,7 @@ namespace FramesForYourPics
 
         private readonly string _picturePath;
         private BitmapImage _picture;
-        private uint _numberOfTimes;
+        private int _numberOfTimes;
 
         #endregion
 
@@ -78,7 +82,7 @@ namespace FramesForYourPics
             set { _picture = value; OnPropertyChanged(); }
         }
 
-        public uint NumberOfTimes
+        public int NumberOfTimes
         {
             get { return _numberOfTimes; }
             set { _numberOfTimes = value; OnPropertyChanged(); }

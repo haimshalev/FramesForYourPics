@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using FramesForYourPics.Messages;
+using FramesForYourPics.MultiThreadedFramework;
 
 namespace FramesForYourPics
 {
-    public class FramesForYourPicsLogic
+    public class FramesForYourPicsLogic : Communicator
     {
         private string _inputPhotosPath;
         private string _framePath;
@@ -20,6 +19,7 @@ namespace FramesForYourPics
         /// Set the path to the frame photo
         /// </summary>
         /// <param name="setFrameCommand">The path to the frame source</param>
+        [MessageHandler]
         public void SetFramePath(SetFrameCommand setFrameCommand)
         {
             _framePath = setFrameCommand.FramePath;
@@ -29,6 +29,7 @@ namespace FramesForYourPics
         /// Get photos request and fills the user interface with all the images from the specified folder
         /// </summary>
         /// <param name="photosRequest"></param>
+        [MessageHandler]
         public void GetPhotosFromFolder(PhotosRequest photosRequest)
         {
             //If there is a new folder path update the current one
@@ -49,7 +50,7 @@ namespace FramesForYourPics
             foreach (var filepath in files)
             {
                 //Insert the photo to the user interface photo list
-                photosRequest.OutputPhotoList.Add(new Photo(filepath));   
+                photosRequest.OutputPhotoList.AddPhoto(filepath);   
             }
         }
 
@@ -57,6 +58,7 @@ namespace FramesForYourPics
         /// Create the final pages for the picture in the request
         /// </summary>
         /// <param name="createPagesRequest">holds the photos to merge and to store in pages</param>
+        [MessageHandler]
         public void CreateFramedPages(CreatePagesRequest createPagesRequest)
         {
             //If there is no frame to merge to alert the user and return
@@ -70,13 +72,13 @@ namespace FramesForYourPics
             }
 
             //Check if all pages are full
-            var sumOfPhotos = GetNumberOfPhotos(createPagesRequest.OutputPhotoList);
+            var sumOfPhotos = createPagesRequest.OutputPhotoList.GetNumberOfPhotos();
             if ((sumOfPhotos % 8 != 0) && (_lastTimeMissingPhotos != (sumOfPhotos % 8)))
             {
                 //Alert the user on the number of missing photos
                 createPagesRequest.CallingWindow.NotifyOnMissingPhotos(8 - (sumOfPhotos % 8));
 
-                _lastTimeMissingPhotos = (int)sumOfPhotos % 8;
+                _lastTimeMissingPhotos = sumOfPhotos % 8;
 
                 //Return
                 return;
@@ -96,20 +98,14 @@ namespace FramesForYourPics
             createPagesRequest.CallingWindow.RestoreDefatultContent();
         }
 
-        private uint GetNumberOfPhotos(IEnumerable<Photo> photoList)
-        {
-            //Return the sum of all photos
-            return photoList.Aggregate<Photo, uint>(0, (current, photo) => current + photo.NumberOfTimes);
-        }
-
 
         /// <summary>
         /// Clears all the temprory folders and images in cache
         /// </summary>
-        private void ClearAllTemproryData(IList list)
+        private void ClearAllTemproryData(UiPageList pageList)
         {
-            //Clear the photo list
-            list.Clear();
+            //Clear the page list
+            pageList.Clear();
 
             //If a scaled directory is not empty lets delete it and create a new one
             DeletaAndCreateDirectory(Constants.TempScaledFilesFolder);
@@ -124,7 +120,7 @@ namespace FramesForYourPics
         /// Delets recursivly a directory and create a new one instead
         /// </summary>
         /// <param name="dirPath">the directory to delete and create</param>
-        private void DeletaAndCreateDirectory(string dirPath)
+        private static void DeletaAndCreateDirectory(string dirPath)
         {
             if (Directory.Exists(dirPath))
                 Directory.Delete(dirPath, true);
@@ -134,10 +130,9 @@ namespace FramesForYourPics
         /// <summary>
         /// Merge all the photos in the photo list with the specified frame and save them to the temp folder
         /// </summary>
-        /// <param name="photoList">a list which holds all the photos to merge</param>
-        private void MergePhotosWithFrame(IEnumerable<Photo> photoList)
+        private void MergePhotosWithFrame(UiPageList pageList)
         {
-            foreach (var photo in photoList)
+            foreach (var photo in pageList.GetPages().SelectMany(page => page))
             {
                 //Merge the photo to the frame
                 using (Image img = Image.FromFile(photo.PicturePath), frameImg = Image.FromFile(_framePath))

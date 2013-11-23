@@ -3,6 +3,18 @@ using System.Linq;
 
 namespace FramesForYourPics
 {
+    #region Public Delegates
+    public delegate void ParameterLessDelegate();
+
+    public delegate void PhotoParameterDelegate(Photo photo);
+
+    public delegate void PhotoListParameterDelegate(PhotoList photoList);
+
+    public delegate void IntParameterDelegate(int num);
+
+    public delegate void IntIntParameterDelegate(int num1, int num2); 
+    #endregion
+
     class Constants
     {
         #region Photos Constants
