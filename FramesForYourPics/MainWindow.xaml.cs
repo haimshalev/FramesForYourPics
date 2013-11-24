@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using FramesForYourPics.Messages;
-using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
 namespace FramesForYourPics
@@ -217,7 +217,7 @@ namespace FramesForYourPics
         /// <param name="e"></param>
         private void btn_close_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Environment.Exit(1);
         }
 
         /// <summary>
@@ -267,10 +267,10 @@ namespace FramesForYourPics
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
-                this.DragMove();
+                DragMove();
         }
        
 
