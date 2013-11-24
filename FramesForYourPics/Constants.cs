@@ -54,10 +54,10 @@ namespace FramesForYourPics
         #region Paths Constants
 
         //The path to the temporary folder which will save the scaled original photos
-        public const string TempScaledFilesFolder = @"TempScaledFolder\";
+        public const string TempScaledFilesFolder = @"C:\FramesForYourPics\TempScaledFolder\";
 
         //A path to a temporary folder which will save the create merged photos
-        public const string TempMergedFilesFolder = @"TempMergedFolder\";
+        public const string TempMergedFilesFolder = @"C:\FramesForYourPics\TempMergedFolder\";
 
         //A path to the output folder which will save the output pages
         public const string OutputFolder = @"OutputFolder\"; 

@@ -94,6 +94,9 @@ namespace FramesForYourPics
             //Disable all buttons in gui
             createPagesRequest.CallingWindow.DisableAllButtons();
 
+            //Create outPutFolder
+            DeletaAndCreateDirectory(Constants.OutputFolder);
+
             //Merge all the photos with frames
             MergePhotosWithFrame(createPagesRequest.OutputPhotoList);
 
