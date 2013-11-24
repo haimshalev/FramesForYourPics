@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>promotional-fridge-magnets.ico</ApplicationIcon>
+    <ApplicationIcon>CustomResources\ApplicationIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -122,16 +122,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Untitled.png" />
+    <Resource Include="CustomResources\LogoBackground.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="promotional-fridge-magnets.ico" />
+    <Resource Include="CustomResources\ApplicationIcon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Image1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image2.png" />
+    <Resource Include="CustomResources\CloseButton.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
