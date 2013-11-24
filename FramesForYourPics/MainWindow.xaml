@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="FramesForYourPics.MainWindow"
         xmlns:l="clr-namespace:FramesForYourPics"
-        Title="עולם מגנט" Height="750" Width="449" Visibility="Visible" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" BorderThickness="2" Opacity="0.95" Background="White" HorizontalAlignment="Right" WindowStyle="None">
+        Title="עולם מגנט" Height="750" Width="449" Visibility="Visible" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" BorderThickness="2" Opacity="0.95" Background="White" HorizontalAlignment="Right" WindowStyle="None" MouseDown="Window_MouseDown">
 
     <Window.Resources>
         <l:BoolToStringConverter x:Key="BoolToString" />

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using FramesForYourPics.Messages;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
@@ -259,6 +260,17 @@ namespace FramesForYourPics
             btnCreatePages.IsEnabled = false;
             btnChoosePhotosFolder.IsEnabled = false;
             btnRefreshPhostosFolder.IsEnabled = false;
+        }
+
+        /// <summary>
+        /// Enable the window to be dragged
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
        
 
