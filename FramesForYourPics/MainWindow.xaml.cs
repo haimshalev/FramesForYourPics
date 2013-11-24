@@ -125,6 +125,7 @@ namespace FramesForYourPics
 
             // this code can only be reached
             // by the user interface thread
+            RestoreDefatultContent();
             MessageBox.Show("אנא בחר מסגרת");
         }
 
@@ -218,6 +219,48 @@ namespace FramesForYourPics
             Application.Current.Shutdown();
         }
 
+        /// <summary>
+        /// Enable all the long lasting function buttons
+        /// </summary>
+        public void EnableAllButtons()
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                // we were called on a worker thread
+                // marshal the call to the user interface thread
+                Dispatcher.Invoke(new ParameterLessDelegate(EnableAllButtons),
+                            new object[] { });
+                return;
+            }
+
+            // this code can only be reached
+            // by the user interface thread
+            btnCreatePages.IsEnabled = true;
+            btnChoosePhotosFolder.IsEnabled = true;
+            btnRefreshPhostosFolder.IsEnabled = true;
+        }
+
+        /// <summary>
+        /// Disable all the long lasting function buttons
+        /// </summary>
+        public void DisableAllButtons()
+        {
+            if (!Dispatcher.CheckAccess())
+            {
+                // we were called on a worker thread
+                // marshal the call to the user interface thread
+                Dispatcher.Invoke(new ParameterLessDelegate(DisableAllButtons),
+                            new object[] { });
+                return;
+            }
+
+            // this code can only be reached
+            // by the user interface thread
+            btnCreatePages.IsEnabled = false;
+            btnChoosePhotosFolder.IsEnabled = false;
+            btnRefreshPhostosFolder.IsEnabled = false;
+        }
+       
 
     }
 }

@@ -45,7 +45,7 @@ namespace FramesForYourPics
 
                     //Enable or disable buttons
                     PreviousEnabled = _currentPageNum != 1;
-                    NextEnabled = _currentPageNum != NumOfPages;
+                    NextEnabled = _currentPageNum != NumOfPages && NumOfPages != 0;
                     OnPropertyChanged();
 
                     //Load new page images and disload previous page images
@@ -243,7 +243,7 @@ namespace FramesForYourPics
         /// <returns>the number of photos in the page list</returns>
         public int GetNumberOfPhotos()
         {
-            return _pageList.Values.SelectMany(photolist => photolist).Aggregate<Photo, int>(0, (current, photo) => current + photo.NumberOfTimes);
+            return _pageList.Values.SelectMany(photolist => photolist).Aggregate(0, (current, photo) => current + photo.NumberOfTimes);
         }
 
         /// <summary>

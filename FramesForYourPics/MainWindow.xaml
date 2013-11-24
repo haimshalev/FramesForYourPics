@@ -41,9 +41,9 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="1" HorizontalAlignment="Right" FlowDirection="RightToLeft" Width="Auto">
             <DockPanel Dock="Top" Width="440">
-                <Button x:Name="btnChoosePhotosFolder" Content="בחר תיקיית תמונות" Click="btnChoosePhotosFolder_Click" Height="50" BorderBrush="{x:Null}" Background="#FF009AAC" Foreground="White" FontWeight="Bold" Width="144"/>
+                <Button x:Name="btnChoosePhotosFolder" Content="בחר תיקיית תמונות" Click="btnChoosePhotosFolder_Click" Height="50" BorderBrush="{x:Null}" Foreground="White" FontWeight="Bold" Width="144" Background="#FF009AAC" RenderTransformOrigin="0.5,0.50"/>
                 <TextBox x:Name="tbInputFolder" Width="195" IsEnabled="False" Height="23" BorderBrush="{x:Null}" Foreground="#FF0193A5" SelectionBrush="White" VerticalAlignment="Bottom" HorizontalAlignment="Right"></TextBox>
-                <Button x:Name="btnRefreshPhostosFolder" Content="רענן" Click="btnRefreshPhostosFolder_Click" Height="50" Foreground="#FF95239D" Background="White" BorderBrush="{x:Null}" FontWeight="Bold" Width="79"/>
+                <Button x:Name="btnRefreshPhostosFolder" Content="רענן" Click="btnRefreshPhostosFolder_Click" Height="50" Foreground="#FF95239D" Background="White" BorderBrush="{x:Null}" FontWeight="Bold" Width="104"/>
             </DockPanel>
             <DockPanel Dock="Top" Margin="0">
                 <Button x:Name="btnChooseFramePath"  Content="בחר מסגרת"   Click="btnChooseFramePath_Click" Height="50" Margin="0" Foreground="#FF95239D" Background="White" BorderBrush="{x:Null}" FontWeight="Bold"/>
@@ -65,11 +65,11 @@
             <Button x:Name="btn_NextPage" Content="הדף הבא" IsEnabled="{Binding NextEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_NextPage_Click" Foreground="#FF219321" Background="White" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="14" />
             <Button x:Name="btn_PreviousPage" Content="הדף הקודם" IsEnabled="{Binding PreviousEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_PreviousPage_Click" FontSize="14" FontWeight="Bold" BorderBrush="{x:Null}" Background="White" Foreground="#FF218D21"/>
         </DockPanel>
-        <Image Grid.Row="0" Source="Untitled.png" Stretch="Fill"/>
+        <Image Grid.Row="0" Source="CustomResources/LogoBackground.png" Stretch="Fill"/>
         <Label Grid.Row="0" Content="עולם מגנט" HorizontalAlignment="Left"  VerticalAlignment="Top" Foreground="White" FontSize="36"/>
         <Button Grid.Row="0" x:Name="btn_close" Margin="396,0,0,25" OpacityMask="Black" Opacity="0.5" Click="btn_close_Click">
             <Button.Background>
-                <ImageBrush ImageSource="Image2.png"/>
+                <ImageBrush ImageSource="CustomResources/CloseButton.png"/>
             </Button.Background>
         </Button>
     </Grid>

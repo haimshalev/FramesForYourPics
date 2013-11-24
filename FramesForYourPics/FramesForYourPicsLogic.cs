@@ -46,12 +46,19 @@ namespace FramesForYourPics
                         where _supportedFileTypes.IsFileSupported(file)
                         select file;
 
+
+            //Disable all buttons in gui
+            photosRequest.CallingWindow.DisableAllButtons();
+
             //Iterate over all the files
             foreach (var filepath in files)
             {
                 //Insert the photo to the user interface photo list
                 photosRequest.OutputPhotoList.AddPhoto(filepath);   
             }
+
+            //Enable all buttons in gui
+            photosRequest.CallingWindow.EnableAllButtons();
         }
 
         /// <summary>
@@ -84,6 +91,9 @@ namespace FramesForYourPics
                 return;
             }
 
+            //Disable all buttons in gui
+            createPagesRequest.CallingWindow.DisableAllButtons();
+
             //Merge all the photos with frames
             MergePhotosWithFrame(createPagesRequest.OutputPhotoList);
 
@@ -95,6 +105,8 @@ namespace FramesForYourPics
             //Clears all the temprory folders and images in cache
             ClearAllTemproryData(createPagesRequest.OutputPhotoList);
 
+            //Enable all buttons in gui
+            createPagesRequest.CallingWindow.EnableAllButtons();
             createPagesRequest.CallingWindow.RestoreDefatultContent();
         }
 
