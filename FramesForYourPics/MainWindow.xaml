@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="FramesForYourPics.MainWindow"
         xmlns:l="clr-namespace:FramesForYourPics"
-        Title="המגנטור" Height="750" Width="530" Visibility="Visible" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" BorderThickness="2" Opacity="0.95">
+        Title="עולם מגנט" Height="750" Width="449" Visibility="Visible" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" BorderThickness="2" Opacity="0.95" Background="White" HorizontalAlignment="Right" WindowStyle="None">
 
     <Window.Resources>
         <l:BoolToStringConverter x:Key="BoolToString" />
@@ -28,33 +28,30 @@
                     <TextBox Grid.Column="0" Grid.Row="1" Width="40" Text="{Binding NumberOfTimes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <Button Content="-" Command="{Binding MinusCommand}" Grid.Column="0" Grid.Row="2"/>
                     <Image Grid.Column="1" Grid.RowSpan="3"  Source="{Binding Picture}" Width="160" Height="120" />
-                    
+
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-
-        <Label Grid.Row="0"  Content="המגנטור" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right"/>
         <DockPanel Grid.Row="1" HorizontalAlignment="Right" FlowDirection="RightToLeft" Width="Auto">
-            <DockPanel Dock="Top">
-                <Button x:Name="btnChoosePhotosFolder" Content="בחר תיקיית תמונות" Click="btnChoosePhotosFolder_Click" Height="50"/>
-                <TextBox x:Name="tbInputFolder" Width="376" IsEnabled="False"></TextBox>
-                <Button x:Name="btnRefreshPhostosFolder" Content="רענן" Click="btnRefreshPhostosFolder_Click" Height="50"/>
+            <DockPanel Dock="Top" Width="440">
+                <Button x:Name="btnChoosePhotosFolder" Content="בחר תיקיית תמונות" Click="btnChoosePhotosFolder_Click" Height="50" BorderBrush="{x:Null}" Background="#FF009AAC" Foreground="White" FontWeight="Bold" Width="144"/>
+                <TextBox x:Name="tbInputFolder" Width="195" IsEnabled="False" Height="23" BorderBrush="{x:Null}" Foreground="#FF0193A5" SelectionBrush="White" VerticalAlignment="Bottom" HorizontalAlignment="Right"></TextBox>
+                <Button x:Name="btnRefreshPhostosFolder" Content="רענן" Click="btnRefreshPhostosFolder_Click" Height="50" Foreground="#FF95239D" Background="White" BorderBrush="{x:Null}" FontWeight="Bold" Width="79"/>
             </DockPanel>
             <DockPanel Dock="Top" Margin="0">
-                <Button x:Name="btnChooseFramePath"  Content="בחר מסגרת"   Click="btnChooseFramePath_Click" Height="50" Margin="0"/>
-                <TextBox x:Name="tbFramePath" Width="439" IsEnabled="False"></TextBox>
+                <Button x:Name="btnChooseFramePath"  Content="בחר מסגרת"   Click="btnChooseFramePath_Click" Height="50" Margin="0" Foreground="#FF95239D" Background="White" BorderBrush="{x:Null}" FontWeight="Bold"/>
+                <TextBox x:Name="tbFramePath" Width="367" IsEnabled="False" BorderBrush="{x:Null}" SelectionBrush="White" Foreground="#FF95239D" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="20"></TextBox>
             </DockPanel>
-            <Button x:Name="btnCreatePages" DockPanel.Dock="Bottom" Content="ייצר דפים להדפסה"  Click="btnCreatePages_Click" Height="50" />
+            <Button x:Name="btnCreatePages" DockPanel.Dock="Bottom" Content="ייצר דפים להדפסה"  Click="btnCreatePages_Click" Height="50" Foreground="White" FontWeight="Bold" FontSize="15" Background="#FF5B38B6" />
         </DockPanel>
-        <ListView Grid.Row="2"  x:Name="lvPhotos" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=PhotoItemTemplate}" FlowDirection="RightToLeft">
+        <ListView Grid.Row="2"  x:Name="lvPhotos" ItemsSource="{Binding}" ItemTemplate="{StaticResource ResourceKey=PhotoItemTemplate}" FlowDirection="RightToLeft" Background="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
@@ -65,8 +62,15 @@
             </ListView.ItemsPanel>
         </ListView>
         <DockPanel Grid.Row="3" HorizontalAlignment="Center">
-            <Button x:Name="btn_NextPage" Content="הדף הבא" IsEnabled="{Binding NextEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_NextPage_Click" />
-            <Button x:Name="btn_PreviousPage" Content="הדף הקודם" IsEnabled="{Binding PreviousEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_PreviousPage_Click"/>
+            <Button x:Name="btn_NextPage" Content="הדף הבא" IsEnabled="{Binding NextEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_NextPage_Click" Foreground="#FF219321" Background="White" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="14" />
+            <Button x:Name="btn_PreviousPage" Content="הדף הקודם" IsEnabled="{Binding PreviousEnabled, Converter={StaticResource BoolToString}}" Width="100" Click="btn_PreviousPage_Click" FontSize="14" FontWeight="Bold" BorderBrush="{x:Null}" Background="White" Foreground="#FF218D21"/>
         </DockPanel>
+        <Image Grid.Row="0" Source="Untitled.png" Stretch="Fill"/>
+        <Label Grid.Row="0" Content="עולם מגנט" HorizontalAlignment="Left"  VerticalAlignment="Top" Foreground="White" FontSize="36"/>
+        <Button Grid.Row="0" x:Name="btn_close" Margin="396,0,0,25" OpacityMask="Black" Opacity="0.5" Click="btn_close_Click">
+            <Button.Background>
+                <ImageBrush ImageSource="Image2.png"/>
+            </Button.Background>
+        </Button>
     </Grid>
 </Window>

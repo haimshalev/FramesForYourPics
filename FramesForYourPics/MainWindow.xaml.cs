@@ -208,10 +208,17 @@ namespace FramesForYourPics
             SetListViewDataBinding(_uiPageList.SetPreviousPage());
         }
 
-        private void btn_Close_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Shut down th application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_close_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
+
+
     }
 }
 
