@@ -20,10 +20,10 @@ namespace FramesForYourPics
         #region Photos Constants
 
         //Every merged image will have this width
-        public const int ScaledWidth = 640;
+        public const int ScaledWidth = 1240;
 
         //Every merged image will have this height
-        public const int ScaledHeight = 480; 
+        public const int ScaledHeight = 877; 
         
         #endregion
 
