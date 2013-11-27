@@ -101,9 +101,7 @@ namespace FramesForYourPics
             MergePhotosWithFrame(createPagesRequest.OutputPhotoList);
 
             //Create PageList from the temp folder and save them to the hard drive
-            // ReSharper disable ObjectCreationAsStatement
-            new PageList(Constants.TempMergedFilesFolder);
-            // ReSharper restore ObjectCreationAsStatement
+            PageList.CreatePageList(Constants.TempMergedFilesFolder);
             
             //Clears all the temprory folders and images in cache
             ClearAllTemproryData(createPagesRequest.OutputPhotoList);

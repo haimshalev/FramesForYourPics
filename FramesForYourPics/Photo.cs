@@ -14,7 +14,7 @@ namespace FramesForYourPics
     /// Holds all the data which saved for every item template in the UI
     /// Uses two way data binding to change the UI and the source
     /// </summary>
-    public class Photo : INotifyPropertyChanged
+    public class Photo : INotifyPropertyChanged , IDisposable
     {
         public Photo(string picturePath , bool setPicture = false)
         {
@@ -132,6 +132,15 @@ namespace FramesForYourPics
         {
             var handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Dispose the photo - thus the inner image if it's loaded
+        /// </summary>
+        public void Dispose()
+        {
+            //Bitmpap Image isn't disposable object - so we just set it to be null 
+            Picture = null;
         }
     }
 }

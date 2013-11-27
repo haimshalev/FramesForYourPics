@@ -31,6 +31,12 @@ namespace FramesForYourPics
 
             // this code can only be reached
             // by the user interface thread
+            foreach (var photo in Items)
+            {
+                photo.Dispose();
+            }
+
+            //Remove all the inner items from the list
             Clear();
         }
 

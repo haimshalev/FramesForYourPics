@@ -90,7 +90,6 @@
     <Compile Include="Messages\FramesForYourPicsMessage.cs" />
     <Compile Include="Messages\SetFrameCommand.cs" />
     <Compile Include="Page.cs" />
-    <Compile Include="PageFactory.cs" />
     <Compile Include="PageList.cs" />
     <Compile Include="Photo.cs" />
     <Compile Include="Messages\PhotosRequest.cs" />

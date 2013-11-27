@@ -210,7 +210,7 @@ namespace FramesForYourPics
         {
             //Update the number of photos and all the relevent paging data
             Paging.NumOfPhotos++;
-            
+
             //Add the photo to one of the lists
             AddPhotoToAPhotoList(photoPath);
         }
@@ -228,13 +228,13 @@ namespace FramesForYourPics
 
             //If we in the correct page , show the image
             var loadImage = (Paging.CurrentPageNum == Paging.NumOfPages);
-            
-            //Set the data context
-            if (loadImage)
-                _mainWindow.SetListViewDataBinding(_pageList[Paging.NumOfPages]);
 
             //Add the photo to the created photo list
             _pageList[Paging.NumOfPages].AddInUIThread(new Photo(photoPath, loadImage));
+
+            //Update the data context if we are in the right UI page
+            if (loadImage)
+                _mainWindow.SetListViewDataBinding(_pageList[Paging.NumOfPages]);
         }
 
         /// <summary>
