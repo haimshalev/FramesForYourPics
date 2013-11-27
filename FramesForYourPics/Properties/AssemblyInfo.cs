@@ -7,7 +7,7 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("עולם מגנט")]
+[assembly: AssemblyTitle("עולמגנט")]
 [assembly: AssemblyDescription("הכן דפי תמונות המוכנים להדפסת מגנטים")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Haim Shalelasvili")]
